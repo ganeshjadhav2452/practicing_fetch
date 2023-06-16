@@ -1,48 +1,46 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
+import Loader from './components/Loader';
 
 
-const dummyMovies = [
-  {
-    id: 1,
-    title: 'Some Dummy Movie',
-    openingText: 'This is the opening text of the movie',
-    releaseDate: '2021-05-18',
-  },
-  {
-    id: 2,
-    title: 'Some Dummy Movie 2',
-    openingText: 'This is the second opening text of the movie',
-    releaseDate: '2021-05-19',
-  },
-];
 function App() {
 
   const [movies, setMovies]= useState([])
+  const [loading,setLoading] = useState(false)
+
 
   const fetchMoviesHandler = async()=>{
     try{
+
+      setLoading(true)
       const rawData = await fetch('https://swapi.dev/api/films/')
 
       const data = await rawData.json();
       setMovies(data.results);
-      console.log(data.results)
+     
     }catch (err){
       console.log(err)
     }
+
+    setLoading(false)
   } 
 
   return (
+   
     <React.Fragment>
+     {loading?  <Loader />: <div>
       <section>
         <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
       <section>
         <MoviesList movies={movies} />
       </section>
+      </div>}
+    
     </React.Fragment>
+    
   );
 }
 
