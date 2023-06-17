@@ -11,8 +11,9 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   
-
+  
   const fetchMoviesHandler = async () => {
+   
     try {
       setError(false)
 
@@ -36,7 +37,7 @@ function App() {
     setLoading(false)
   }
 
-  
+  useEffect(fetchMoviesHandler,[])
 
   return (
 
