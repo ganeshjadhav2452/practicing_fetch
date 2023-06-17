@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
 import Loader from './components/Loader';
+import InputForm from './components/InputForm';
 
+import InputFormContext from './store/InputFormContext';
 
 function App() {
 
@@ -11,7 +13,34 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   
+  const {inputData} = useContext(InputFormContext)
+
+  useEffect(()=>{
+    let newArray = []
+setMovies((prevData)=>{
+
+  for(let i = 0; i<inputData.length; i++){
+    let spotted = false;
+    for(let j = 0; j<prevData.length; j++){
+
+      if(inputData[i].title === prevData[j].title){{
+        spotted = true;
+        break;
+      }}  
+    }
+    if(spotted === false){
+      newArray.push(inputData[i])
+    }
+  }
+
+ return [...newArray,...prevData] 
+})
+
+    // setMovies([...inputData,...movies] )
+    console.log(movies)
   
+  },[inputData])
+
   const fetchMoviesHandler = async () => {
    
     try {
@@ -19,17 +48,18 @@ function App() {
 
       setLoading(true)
       const response = await fetch('https://swapi.dev/api/films/')
-      console.log(response)
+     
       if (!response.ok) {
         setError(true)
         throw new Error('Something went wrong ....Retrying')
       }
       const data = await response.json();
       setMovies(data.results);
-    
+      
+   
     } catch (err) {
       setLoading(false)
-      console.log(err)
+    
      
 
     }
@@ -42,7 +72,9 @@ function App() {
   return (
 
     <React.Fragment>
+   
       <div>
+        <InputForm/>
         <section>
           <button onClick={fetchMoviesHandler}>Fetch Movies</button>
         </section>
@@ -52,6 +84,7 @@ function App() {
           <MoviesList movies={movies} />
         </section>
       </div>
+    
     </React.Fragment>
 
   );
