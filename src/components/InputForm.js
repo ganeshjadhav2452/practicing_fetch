@@ -65,7 +65,7 @@ function InputForm() {
             <form className='mb-3 d-flex flex-column' onSubmit={submitDataHandler}>
                 <input value={inputData.title} className='mb-3 form-control' type='text' placeholder='Input Title' onChange={titleInputHandler} />
 
-                <textarea value={inputData.text} placeholder='Opening text' class="form-control mb-3" id="exampleFormControlTextarea1" rows="4" onChange={textInputHandler}></textarea>
+                <textarea value={inputData.text} placeholder='Opening text' className="form-control mb-3" id="exampleFormControlTextarea1" rows="4" onChange={textInputHandler}></textarea>
 
                 <input value={inputData.date} type='date' className='mb-3 form-control' onChange={dateInputHandler} />
 
